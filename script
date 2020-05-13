@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mkdir obj 2> /dev/null
+mkdir bin 2> /dev/null
