@@ -2,3 +2,4 @@
 
 mkdir obj 2> /dev/null
 mkdir features 2> /dev/null
+touch features/key.txt 2> /dev/null
