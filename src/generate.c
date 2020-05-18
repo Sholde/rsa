@@ -32,8 +32,8 @@ void next_prime(mpz_t p, int size) {
 }
 
 void euclide(mpz_t u, mpz_t v, mpz_t phi_n, mpz_t e) {
-    mpz_t q, r, rp rs, up, us, vp, vs;
-    mpz_inits(q, r, rp, up, us, vp, vs, NULL);
+    mpz_t q, r, rp, rs, up, us, vp, vs, tmp;
+    mpz_inits(q, r, rp, rs, up, us, vp, vs, tmp, NULL);
 
     // Init
     mpz_set(r, phi_n);
@@ -48,9 +48,24 @@ void euclide(mpz_t u, mpz_t v, mpz_t phi_n, mpz_t e) {
         mpz_div(q, r, rp);
         mpz_set(rs, r); mpz_set(us, u); mpz_set(vs, v);
         mpz_set(r, rp); mpz_set(u, up); mpz_set(v, vp);
+
+        mpz_set(tmp, rp);
+        mpz_set(rp, rs);
+        mpz_mul(tmp, tmp, q);
+        mpz_sub(rp, rp, tmp);
+
+        mpz_set(tmp, up);
+        mpz_set(up, us);
+        mpz_mul(tmp, tmp, q);
+        mpz_sub(up, up, tmp);
+
+        mpz_set(tmp, vp);
+        mpz_set(vp, vs);
+        mpz_mul(tmp, tmp, q);
+        mpz_sub(vp, vp, tmp);
     }
 
-    mpz_clears(q, r, rp, up, us, vp, vs, NULL);
+    mpz_clears(q, r, rp, rs, up, us, vp, vs, tmp, NULL);
 }
 
 void compute_e(key *k, mpz_t phi_n) {
@@ -64,6 +79,7 @@ void compute_e(key *k, mpz_t phi_n) {
 
     for(int i = 1; i < 99999; i++) {
         mpz_mul_2exp(k->pu->e, test, i);
+        mpz_add_ui(k->pu->e, k->pu->e, 1);
         mpz_gcd(tmp, phi_n, k->pu->e);
         if(mpz_cmp_ui(tmp, 1) == 0) {
             break;
@@ -78,7 +94,10 @@ void compute_d(key *k, mpz_t phi_n) {
     mpz_t u, v;
     mpz_inits(u, v, NULL);
     euclide(u, v, phi_n, k->pu->e);
-    mpz_set(k->pr->d, v);
+    mpz_set(k->pr->d, v);/*
+    if(mpz_cmp_ui(k->pr->d, 0) < 0) {
+        mpz_add(k->pr->d, k->pr->d, phi_n);
+    }*/
     mpz_clears(u, v, NULL);
 }
 
@@ -92,7 +111,7 @@ key *generate(int size_modulus) {
     do {
         next_prime(p, size_modulus / 2);
         next_prime(q, size_modulus / 2);
-    } while (mpz_probab_prime_p(p, size_modulus / 20) != 1 && mpz_probab_prime_p(q, size_modulus / 20) != 1 );
+    } while (mpz_cmp(p, q) == 0 || mpz_probab_prime_p(p, 40) == 0 || mpz_probab_prime_p(q, 40) == 0 );
 
     // Set n
     mpz_mul(k->pr->n, p, q);
@@ -107,8 +126,10 @@ key *generate(int size_modulus) {
     mpz_clears(p1, q1, NULL);
 
     // Compute e
+    compute_e(k, phi_n);
 
     // Compute d
+    compute_d(k, phi_n);
 
     mpz_clears(p, q, phi_n, NULL);
 
