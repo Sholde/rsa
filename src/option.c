@@ -5,20 +5,9 @@
 
 #include "structure.h"
 #include "generate.h"
+#include "display.h"
 #include "option.h"
 #include "io.h"
-
-void print_mpz(mpz_t m, const char* name, int base) {
-    printf("%s : ", name);
-    mpz_out_str(0, base, m);
-    printf("\n\n");
-}
-
-void print_bold(const char *s) {
-    printf("\033[1m");
-    printf("%s", s);
-    printf("\033[0m");
-}
 
 void option(int argc, char **argv) {
     if(argc == 1) {
