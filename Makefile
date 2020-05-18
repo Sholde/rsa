@@ -2,13 +2,12 @@
 
 CC = gcc
 
-EXEC = app.exe
+EXEC = rsa
 ARCHIVE = BOUTON_Nicolas
 TAR = tar.gz
 
 SRCDIR = src
 OBJDIR = obj
-BINDIR = bin
 
 DEPS = $(wildcard $(SRCDIR)/*.h)
 SRC = $(wildcard $(SRCDIR)/*.c)
@@ -21,7 +20,7 @@ FLAG = -Wall -g3
 all: config compil
 
 compil: $(OBJ)
-	@ $(CC) -o $(BINDIR)/$(EXEC) $(OBJ)
+	@ $(CC) -o $(EXEC) $(OBJ)
 	@ echo "Linking complete!"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
@@ -29,13 +28,13 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 	@ echo "Compiled "$@" successfully!"
 
 run:
-	@ ./$(BINDIR)/$(EXEC)
+	@ ./$(EXEC)
 
 clean:
 	@ if [ $(ARCHIVE).$(TAR) ]; then rm -f $(ARCHIVE).$(TAR); echo "Archive removed!"; fi
 	@ rm -rf $(OBJDIR)
 	@ echo "Object files removed!"
-	@ rm -rf $(BINDIR)
+	@ rm -f $(EXEC)
 	@ echo "Executable removed!"
 	
 package: clean
