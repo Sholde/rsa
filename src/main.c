@@ -3,6 +3,7 @@
 #include "option.h"
 #include "structure.h"
 #include "generate.h"
+#include "io.h"
 
 void print_mpz(mpz_t m, const char* name, int base) {
     printf("%s : ", name);
@@ -13,7 +14,8 @@ void print_mpz(mpz_t m, const char* name, int base) {
 int main(int argc, char **argv) {
     //option(argc, argv);
 
-    key *k = generate(2048);
+    //key *k = generate(2048);
+    key *k = read_key();
     print_mpz(k->pr->n, "private n", 10);
     print_mpz(k->pr->d, "d", 10);
     print_mpz(k->pu->n, "public n", 10);
@@ -29,6 +31,8 @@ int main(int argc, char **argv) {
     print_mpz(test, "decypher", 10);
     mpz_clear(test);
     printf("size of n : %ld\n", mpz_sizeinbase(k->pr->n, 2));
+
+    //write_key(k);
 
     clear_key(k);
     return 0;
