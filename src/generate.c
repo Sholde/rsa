@@ -104,18 +104,19 @@ void compute_d(key *k, mpz_t phi_n) {
 key *generate(int size_modulus) {
     key *k = init_key();
 
-    mpz_t p, q, phi_n;
+    mpz_t p, q, n, phi_n;
     mpz_inits(p, q, phi_n, NULL);
 
     // generate 2 prime
     do {
         next_prime(p, size_modulus / 2);
         next_prime(q, size_modulus / 2);
-    } while (mpz_cmp(p, q) == 0 || mpz_probab_prime_p(p, 40) == 0 || mpz_probab_prime_p(q, 40) == 0 );
+        mpz_mul(n, p, q);
+    } while (mpz_cmp(p, q) == 0 || mpz_probab_prime_p(p, 40) == 0 || mpz_probab_prime_p(q, 40) == 0 || mpz_sizeinbase(n, 2) != 2048);
 
     // Set n
-    mpz_mul(k->pr->n, p, q);
-    mpz_set(k->pu->n, k->pr->n);
+    mpz_set(k->pr->n, n);
+    mpz_set(k->pu->n, n);
 
     // Compute phi_n
     mpz_t p1, q1;
