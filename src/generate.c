@@ -94,10 +94,10 @@ void compute_d(key *k, mpz_t phi_n) {
     mpz_t u, v;
     mpz_inits(u, v, NULL);
     euclide(u, v, phi_n, k->pu->e);
-    mpz_set(k->pr->d, v);/*
+    mpz_set(k->pr->d, v);
     if(mpz_cmp_ui(k->pr->d, 0) < 0) {
         mpz_add(k->pr->d, k->pr->d, phi_n);
-    }*/
+    }
     mpz_clears(u, v, NULL);
 }
 
