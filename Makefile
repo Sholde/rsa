@@ -15,12 +15,14 @@ OBJ = $(SRC:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 FLAG = -Wall -g3
 
+GMP = -lgmp
+
 # make
 
 all: config compil
 
 compil: $(OBJ)
-	@ $(CC) -o $(EXEC) $(OBJ)
+	@ $(CC) -o $(EXEC) $(OBJ) $(GMP)
 	@ echo "Linking complete!"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
