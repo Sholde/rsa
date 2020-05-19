@@ -13,4 +13,18 @@ void write_key(key *k);
  */
 key *read_key(void);
 
+/**
+ * Write a string on file
+ * @param path : path
+ * @param s : string
+ */
+void write_file(char *path, char *s);
+
+/**
+ * Check option
+ * @param path : path
+ * @return string
+ */
+char *read_file(char *path);
+
 #endif // !_io_h
