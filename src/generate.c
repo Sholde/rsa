@@ -5,21 +5,6 @@
 #include "structure.h"
 #include "generate.h"
 
-key *init_key(void) {
-    key *k = malloc(sizeof(key));
-    k->pr = malloc(sizeof(private));
-    k->pu = malloc(sizeof(public));
-    mpz_inits(k->pr->d, k->pr->n, k->pu->e, k->pu->n, NULL);
-    return k;
-}
-
-void clear_key(key *k) {
-    mpz_clears(k->pr->d, k->pr->n, k->pu->e, k->pu->n, NULL);
-    free(k->pr);
-    free(k->pu);
-    free(k);
-}
-
 void next_prime(mpz_t p, int size) {
     gmp_randstate_t etat ;
     gmp_randinit_default(etat);

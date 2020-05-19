@@ -23,4 +23,18 @@ typedef struct {
     mpz_t size;
 } msg;
 
+/**
+ * Init key
+ */
+key *init_key(void);
+
+/**
+ * Clear key
+ */
+void clear_key(key *k);
+
+msg *init_msg(void);
+
+void clear_msg(msg *m);
+
 #endif // !_structure_h

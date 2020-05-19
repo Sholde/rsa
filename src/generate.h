@@ -2,16 +2,6 @@
 #define _generate_h
 
 /**
- * Init key
- */
-key *init_key(void);
-
-/**
- * Clear key
- */
-void clear_key(key *k);
-
-/**
  * Generate a prime
  * @param p : prime
  * @param size : size of prime
